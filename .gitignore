@@ -1,0 +1,13 @@
+# Java / Spring Boot
+target/
+*.class
+*.jar
+.mvn/
+
+# Node / React
+node_modules/
+build/
+.env
+
+# IDE
+.idea/
