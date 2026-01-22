@@ -3,20 +3,14 @@ package com.darpan.nidanVitals.service.implementation;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.parser.IParser;
 import com.darpan.nidanVitals.dto.VitalsInputDTO;
-import com.darpan.nidanVitals.repository.ObservationRepository;
 import com.darpan.nidanVitals.service.FhirService;
 import org.hl7.fhir.r4.model.*;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FhirServceImpl implements FhirService {
+public class FhirServiceImpl implements FhirService {
     private final FhirContext fhirContext = FhirContext.forR4();
     private final IParser iParser = fhirContext.newJsonParser();
-    private final ObservationRepository observationRepository;
-
-    public FhirServceImpl(ObservationRepository observationRepository) {
-        this.observationRepository = observationRepository;
-    }
 
     @Override
     public Observation createFhirObservation(VitalsInputDTO vitalsInputDTO) {
@@ -58,5 +52,9 @@ public class FhirServceImpl implements FhirService {
 
     public String SerializeObservationResource(Observation observation){
         return iParser.encodeResourceToString(observation);
+    }
+
+    public Observation DeserializeObservationResource(String rawJson){
+        return iParser.parseResource(Observation.class,rawJson);
     }
 }
