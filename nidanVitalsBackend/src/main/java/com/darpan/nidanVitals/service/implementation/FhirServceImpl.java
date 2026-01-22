@@ -55,4 +55,8 @@ public class FhirServceImpl implements FhirService {
                 .setValue(new Quantity().setValue(vitalsInputDTO.getDiastolicBp()).setUnit("mm[Hg]").setSystem("http://loinc.org").setCode("mm[Hg]"));
         return observation;
     }
+
+    public String SerializeObservationResource(Observation observation){
+        return iParser.encodeResourceToString(observation);
+    }
 }
