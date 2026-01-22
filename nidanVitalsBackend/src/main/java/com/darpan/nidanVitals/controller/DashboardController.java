@@ -1,12 +1,9 @@
 package com.darpan.nidanVitals.controller;
 
-import ca.uhn.fhir.context.FhirContext;
-import ca.uhn.fhir.parser.IParser;
 import com.darpan.nidanVitals.dto.VitalsInputDTO;
-import com.darpan.nidanVitals.service.FhirService;
 import com.darpan.nidanVitals.service.ObservationService;
 import lombok.NonNull;
-import org.hl7.fhir.r4.model.Observation;
+import org.checkerframework.checker.units.qual.N;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +22,17 @@ public class DashboardController {
     @PostMapping("/observation")
     public ResponseEntity<@NonNull String> createObservation(@RequestBody VitalsInputDTO vitalsInputDTO){
         try {
-            String fhirJson = observationService.saveObservation(vitalsInputDTO);
+            String fhirJson = observationService.setObservation(vitalsInputDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(fhirJson);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error: "+e.getMessage());
+        }
+    }
+
+    @GetMapping("/observation")
+    public ResponseEntity<@NonNull String> fetchObservation(@RequestParam(required = false) String patientId){
+        try{
+            String fhirJson = observationService.getObservation(patientId);
             return ResponseEntity.status(HttpStatus.CREATED).body(fhirJson);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error: "+e.getMessage());
