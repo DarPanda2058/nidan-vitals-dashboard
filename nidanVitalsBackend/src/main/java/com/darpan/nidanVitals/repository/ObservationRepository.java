@@ -5,8 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ObservationRepository extends JpaRepository<Patient, Integer> {
-    List<Patient> findByPatientId(String patientId);
+    Optional<Patient> findByPatientId(String patientId);
 }

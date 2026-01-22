@@ -19,7 +19,11 @@ public class ObservationServiceImpl implements ObservationService {
     }
 
     @Override
-    public String saveObservation(VitalsInputDTO vitalsInputDTO) {
+    public String setObservation(VitalsInputDTO vitalsInputDTO) {
+        Optional<Patient> tempPatient = observationRepository.findByPatientId(vitalsInputDTO.getPatientId());
+        if(tempPatient.isPresent()){
+            throw new RuntimeException("Patient already exists.");
+        }
         Observation observation = fhirService.createFhirObservation(vitalsInputDTO);
         String rawFhirJson = fhirService.SerializeObservationResource(observation);
         Patient patient = new Patient();
