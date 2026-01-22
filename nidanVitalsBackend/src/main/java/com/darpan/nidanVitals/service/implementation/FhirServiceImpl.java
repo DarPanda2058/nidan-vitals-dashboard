@@ -7,6 +7,8 @@ import com.darpan.nidanVitals.service.FhirService;
 import org.hl7.fhir.r4.model.*;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FhirServiceImpl implements FhirService {
     private final FhirContext fhirContext = FhirContext.forR4();
@@ -54,7 +56,24 @@ public class FhirServiceImpl implements FhirService {
         return iParser.encodeResourceToString(observation);
     }
 
-    public Observation DeserializeObservationResource(String rawJson){
-        return iParser.parseResource(Observation.class,rawJson);
+    @Override
+    public String SerializeBundleResource(Bundle bundle) {
+        return iParser.encodeResourceToString(bundle);
     }
+
+    @Override
+    public Observation DeserializeObservationResource(String fhirJson) {
+        return iParser.parseResource(Observation.class,fhirJson);
+    }
+
+    @Override
+    public Bundle CreateFhirBundle(List<Observation> observations) {
+        Bundle bundle = new Bundle();
+        bundle.setType(Bundle.BundleType.SEARCHSET);
+        bundle.setTotal(observations.size());
+
+        observations.forEach(observation -> bundle.addEntry().setFullUrl(observation.getId()).setResource(observation));
+        return bundle;
+    }
+
 }
