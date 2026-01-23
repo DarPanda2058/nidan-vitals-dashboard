@@ -1,7 +1,7 @@
 import { Button } from "./ui/button";
 import axios from "axios";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card";
-import { set, useForm} from "react-hook-form";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import {useForm} from "react-hook-form";
 import getBaseUrl from "../utils/apiConfig";
 import { useState, useEffect } from "react";
 
