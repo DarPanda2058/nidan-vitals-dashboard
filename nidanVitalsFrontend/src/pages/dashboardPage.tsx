@@ -22,10 +22,8 @@ const DashboardPage = () => {
                     <TabsTrigger value="overview">Overview</TabsTrigger>
                     <TabsTrigger value="patients">Add New Vitals Record</TabsTrigger>
                 </TabsList>
-                <TabsContent value="overview" className="mt-4">
-                    <div className="p-4 bg-blue-50 rounded-lg shadow">
-                        <h2 className="text-2xl font-semibold mb-4">Dashboard Overview</h2>
-                        <p>Monitor Patient Vitals</p>
+                <TabsContent value="overview" className="mt-4 w-full">
+                    <div className="p-4 w-full bg-blue-50 rounded-lg shadow">
                         <PatientTable />
                     </div>
 
