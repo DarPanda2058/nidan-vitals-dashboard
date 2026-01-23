@@ -1,6 +1,5 @@
 import { Field } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { Button } from "./ui/button"
 import axios from "axios";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs"
 import { useEffect, useState } from "react";
@@ -23,14 +22,14 @@ type PatientVitalRecord = {
 
 const PatientTable = () => {
 
-const [patientVitals, setPatientVitals] = useState<PatientVitalRecord[]>( []);
-    const [searchTerm, setSearchTerm] = useState<string>("");    
+    const [patientVitals, setPatientVitals] = useState<PatientVitalRecord[]>( []);
+    const [searchTerm, setSearchTerm] = useState<string>("");
 
     useEffect(() => {
         const fetchPatientVitals = async () => {
             try {
                 const response = await axios.get(getBaseUrl());
-                setPatientVitals(                 parsePatientVitalsFromBundle(response.data));
+                setPatientVitals(parsePatientVitalsFromBundle(response.data));
             }catch (error) {
                 console.error("Error fetching patient vitals:", error);
                 window.alert("Error fetching patient vitals. Please try again.");
@@ -68,7 +67,7 @@ const [patientVitals, setPatientVitals] = useState<PatientVitalRecord[]>( []);
                     <TabsTrigger value="obese">Obese</TabsTrigger>
                 </TabsList>
                 <TabsContent value="all" className="mt-4 w-full">
-{
+                    {
                         filteredVitalsBySearch.length === 0 ? (
                             <Alert variant="destructive" className="max-w-md justify-center mx-auto">
                                 <AlertCircleIcon />
@@ -80,16 +79,52 @@ const [patientVitals, setPatientVitals] = useState<PatientVitalRecord[]>( []);
                         ) : (
                             TableView({patients: filteredVitalsBySearch})
                         )
-                    }                    
+                    }
                 </TabsContent>
                 <TabsContent value="normal" className="mt-4">
-                    
+                    {
+                        filteredVitalsByStatus("normal").length === 0 ? (
+                            <Alert variant="destructive" className="max-w-md justify-center mx-auto">
+                                <AlertCircleIcon />
+                                <AlertTitle>No Patients Found</AlertTitle>
+                                <AlertDescription>
+                                    No patient vitals records match your search. Please try again with different criteria.
+                                </AlertDescription>
+                            </Alert>
+                        ) : (
+                            TableView({patients: filteredVitalsByStatus("normal")})
+                        )
+                    }
                 </TabsContent>
                 <TabsContent value="overweight" className="mt-4">
-                    
+                    {
+                        filteredVitalsByStatus("overweight").length === 0 ? (
+                            <Alert variant="destructive" className="max-w-md justify-center mx-auto">
+                                <AlertCircleIcon />
+                                <AlertTitle>No Patients Found</AlertTitle>
+                                <AlertDescription>
+                                    No patient vitals records match your search. Please try again with different criteria.
+                                </AlertDescription>
+                            </Alert>
+                        ) : (
+                            TableView({patients: filteredVitalsByStatus("overweight")})
+                        )
+                    }
                 </TabsContent>
                 <TabsContent value="obese" className="mt-4">
-                    
+                    {
+                        filteredVitalsByStatus("obese").length === 0 ? (
+                            <Alert variant="destructive" className="max-w-md justify-center mx-auto">
+                                <AlertCircleIcon />
+                                <AlertTitle>No Patients Found</AlertTitle>
+                                <AlertDescription>
+                                    No patient vitals records match your search. Please try again with different criteria.
+                                </AlertDescription>
+                            </Alert>
+                        ) : (
+                            TableView({patients: filteredVitalsByStatus("obese")})
+                        )
+                    }
                 </TabsContent>
             </Tabs>
         </div>

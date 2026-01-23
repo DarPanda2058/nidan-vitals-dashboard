@@ -58,3 +58,10 @@ export const parsePatientVitalsFromBundle = (bundle: any): PatientVital[] => {
     
 }
 
+export const getStatusFromBmi = (bmi: number | null): string => {
+    if (bmi === null) return "Unknown";
+    if (bmi < 18.5) return "Underweight";
+    if (bmi >= 18.5 && bmi < 24.9) return "Normal";
+    if (bmi >= 25 && bmi < 29.9) return "Overweight";
+    return "Obese";
+}
