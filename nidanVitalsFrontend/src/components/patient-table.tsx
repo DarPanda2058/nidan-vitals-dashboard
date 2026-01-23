@@ -1,10 +1,31 @@
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/field"
+import { Field } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Button } from "./ui/button"
+import axios from "axios";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs"
+import { useEffect, useState } from "react";
+import getBaseUrl from "../utils/apiConfig";
+import { parsePatientVitalsFromBundle } from "@/lib/fhir-utility";
+
+
+
 const PatientTable = () => {
 
     
+
+    useEffect(() => {
+        const fetchPatientVitals = async () => {
+            try {
+                const response = await axios.get(getBaseUrl());
+                console.log("Patient Vitals Data:", response.data);
+                 parsePatientVitalsFromBundle(response.data);
+
+            }catch (error) {
+                console.error("Error fetching patient vitals:", error);
+            }
+        }
+        fetchPatientVitals()},[]
+    )
 
     return (
         <div className="w-full p-4 bg-white rounded-lg shadow">
@@ -14,7 +35,7 @@ const PatientTable = () => {
             <Button>Search</Button>
             </Field>
 
-            <Tabs defaultValue="overview" className="mt-6">
+            <Tabs defaultValue="all" className="mt-6">
                 <TabsList>
                     <TabsTrigger value="all">All</TabsTrigger>
                     <TabsTrigger value="normal">Normal</TabsTrigger>
